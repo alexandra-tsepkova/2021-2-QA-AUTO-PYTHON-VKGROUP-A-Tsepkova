@@ -1,16 +1,17 @@
+import random
+import string
+import time
+
+import pytest
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.common.exceptions import TimeoutException
-import pytest
-import time
-import string
-import random
-
 
 TIMEOUT = 4
+
 
 @pytest.fixture(scope='function', autouse=True)
 def driver():
@@ -24,6 +25,7 @@ def driver():
     chrome.get("https:target.my.com/")
     yield chrome
     chrome.quit()
+
 
 @pytest.fixture(scope='function', autouse=True)
 def login(driver):
@@ -51,6 +53,7 @@ def wait_for_load(driver):
     except TimeoutException:
         pass
 
+
 def wait_to_be_clickable(driver, element):
     try:
         WebDriverWait(driver, TIMEOUT
@@ -58,9 +61,12 @@ def wait_to_be_clickable(driver, element):
     except TimeoutException:
         pass
 
+
 def create_new_name():
     output_string = ''.join(random.SystemRandom().choice(string.ascii_letters) for _ in range(10))
     return output_string
+
+
 def create_new_phone():
     output_string = ''.join(random.SystemRandom().choice(string.digits) for _ in range(10))
     return output_string

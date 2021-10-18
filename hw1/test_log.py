@@ -1,10 +1,13 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-import time
-import pytest
 import random
-from .conftest import wait_for_load, wait_to_be_clickable, create_new_name, create_new_phone
+import time
+
+import pytest
+from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
+
+from .conftest import (create_new_name, create_new_phone, wait_for_load,
+                       wait_to_be_clickable)
 
 
 def test_login(driver):
@@ -62,10 +65,3 @@ def test_page_navigation(driver, locator, check_locator):
     button.click()
     wait_for_load(driver)
     assert (driver.find_element(*check_locator))
-
-
-
-
-
-
-
