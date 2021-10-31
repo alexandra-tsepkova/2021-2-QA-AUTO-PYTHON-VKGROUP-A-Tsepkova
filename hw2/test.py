@@ -1,3 +1,4 @@
+import allure
 import pytest
 from selenium.common.exceptions import NoSuchElementException
 
@@ -11,13 +12,16 @@ from settings import (
 )
 
 
+@allure.feature('Авторизация на сайте')
 class TestAuthentication(BaseCase):
+    @allure.title('Авторизация падает, если неправильный логин')
     @pytest.mark.UI
     def test_login_fails_wrong_password(self, page):
         page.login(wrong_psw=True)
         error_window = page.find(page_locators.ERROR_LOGIN)
         assert error_window.is_displayed()
 
+    @allure.title('Авторизация падает, если данные неправильно отформатированы')
     @pytest.mark.UI
     def test_login_fails_invalid_input(self, page):
         page.login(invalid_log=True)
@@ -25,7 +29,9 @@ class TestAuthentication(BaseCase):
         assert error_window.is_displayed()
 
 
+@allure.feature('Работа с кампаниями')
 class TestCampaigns(BaseCase):
+    @allure.title('Кампанию можно создать')
     @pytest.mark.UI
     def test_create_campaign(self, dashboard_page, path_to_pic):
         dashboard_page.click(dashboard_locators.CREATE_NEW_CAMPAIGN)
@@ -50,6 +56,7 @@ class TestCampaigns(BaseCase):
         assert icon_success.is_displayed()
 
 
+@allure.feature('Работа с сегментами')
 class TestSegments(BaseCase):
     @staticmethod
     def create_segment(segment_page, segment_name):
@@ -70,6 +77,7 @@ class TestSegments(BaseCase):
         segment_name_input.send_keys(segment_name)
         segment_page.click(segment_locators.SUBMIT_BUTTON)
 
+    @allure.title('Сегмент может быть создан')
     @pytest.mark.UI
     def test_create_segment(self, segment_page):
         self.create_segment(segment_page, segment_name_for_input)
@@ -77,6 +85,7 @@ class TestSegments(BaseCase):
         name = name_column.find_element(*segment_locators.SEGMENT_LIST_CREATED_SEGMENT)
         assert name
 
+    @allure.title('Сегмент может быть удалён')
     @pytest.mark.UI
     def test_delete_segment(self, segment_page):
         self.create_segment(segment_page, segment_name_for_delete)
