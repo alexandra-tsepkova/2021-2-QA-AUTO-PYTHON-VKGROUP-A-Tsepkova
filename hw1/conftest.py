@@ -1,14 +1,17 @@
 import random
 import string
-import time
 
+from .locators import basic_locators
 import pytest
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+
+from .settings import (
+    login_string,
+    password_string
+)
 
 TIMEOUT = 4
 
@@ -17,7 +20,6 @@ TIMEOUT = 4
 def driver():
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--lang=en_US')
-#    chrome_options.add_experimental_option('prefs', {'intl.accept_languages': 'en_US'})
     chrome = webdriver.Chrome(
         chrome_options=chrome_options,
         executable_path="/home/alexandra/drivers/chromedriver",
@@ -30,13 +32,13 @@ def driver():
 @pytest.fixture(scope='function', autouse=True)
 def login(driver):
     wait_for_load(driver)
-    log_button = driver.find_element(By.XPATH, "//div[starts-with(@class,'responseHead-module-button')]")
+    log_button = driver.find_element(*basic_locators.LOG_BUTTON)
     log_button.click()
-    email = driver.find_element(By.NAME, "email")
-    password = driver.find_element(By.NAME, "password")
-    email.send_keys("testingaccount@internet.ru")
-    password.send_keys("ikYESaAr12a]")
-    authform_button = driver.find_element(By.XPATH, "//div[starts-with(@class,'authForm-module-button')]")
+    email = driver.find_element(*basic_locators.EMAIL_INPUT)
+    password = driver.find_element(*basic_locators.PASSWORD_INPUT)
+    email.send_keys(login_string)
+    password.send_keys(password_string)
+    authform_button = driver.find_element(*basic_locators.AUTHFORM_BUTTON)
     authform_button.click()
     wait_for_load(driver)
     yield driver
@@ -45,10 +47,10 @@ def login(driver):
 def wait_for_load(driver):
     try:
         WebDriverWait(driver, TIMEOUT
-                      ).until(EC.presence_of_element_located((By.CLASS_NAME, "spinner")))
+                      ).until(EC.presence_of_element_located(basic_locators.SPINNER))
 
         WebDriverWait(driver, TIMEOUT
-                      ).until_not(EC.presence_of_element_located((By.CLASS_NAME, "spinner")))
+                      ).until_not(EC.presence_of_element_located(basic_locators.SPINNER))
 
     except TimeoutException:
         pass

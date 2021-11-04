@@ -1,29 +1,25 @@
-import random
-import time
-
 import pytest
-from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.common.by import By
+from .locators import basic_locators
 
+from selenium.common.exceptions import NoSuchElementException
 from .conftest import (create_new_name, create_new_phone, wait_for_load,
                        wait_to_be_clickable)
 
 
 def test_login(driver):
-    username_menu = driver.find_element(By.XPATH, "//div[starts-with(@class,'right-module-userNameWrap')]")
+    username_menu = driver.find_element(*basic_locators.USERNAME_MENU)
     assert username_menu.is_displayed()
 
 
 def test_logout(driver):
-    username_menu = driver.find_element(By.XPATH, "//div[starts-with(@class,'right-module-userNameWrap')]")
+    username_menu = driver.find_element(*basic_locators.USERNAME_MENU)
     username_menu.click()
-    logout_button = driver.find_element(By.XPATH, "//a[@href = '/logout']")
+    logout_button = driver.find_element(*basic_locators.LOGOUT_BUTTON)
     wait_to_be_clickable(driver, logout_button)
     logout_button.click()
     wait_for_load(driver)
     with pytest.raises(NoSuchElementException):
-        username_menu = driver.find_element(By.XPATH, "//div[starts-with(@class,'right-module-userNameWrap')]")
+        driver.find_element(*basic_locators.USERNAME_MENU)
 
 
 def test_edit_contact_information(driver):
@@ -31,34 +27,33 @@ def test_edit_contact_information(driver):
     new_phone = create_new_phone()
     driver.get("https://target.my.com/profile/contacts")
     wait_for_load(driver)
-    fio_elem = driver.find_element(By.XPATH, "//div[@data-name = 'fio']")
-    phone_elem = driver.find_element(By.XPATH, "//div[@data-name = 'phone']")
-    fio_input = fio_elem.find_element(By.TAG_NAME, "input")
-    phone_input = phone_elem.find_element(By.TAG_NAME, "input")
+    fio_elem = driver.find_element(*basic_locators.FIO_ELEM)
+    phone_elem = driver.find_element(*basic_locators.PHONE_ELEM)
+    fio_input = fio_elem.find_element(*basic_locators.INPUT_WINDOW)
+    phone_input = phone_elem.find_element(*basic_locators.INPUT_WINDOW)
     previous_name = fio_input.get_attribute("value")
     previous_phone = phone_input.get_attribute("value")
     fio_input.clear()
     phone_input.clear()
     fio_input.send_keys(new_name)
     phone_input.send_keys(new_phone)
-    save_button = driver.find_element(By.CLASS_NAME, "button_submit")
+    save_button = driver.find_element(*basic_locators.SAVE_BUTTON)
     save_button.click()
     driver.refresh()
     wait_for_load(driver)
-    fio_elem = driver.find_element(By.XPATH, "//div[@data-name = 'fio']")
-    phone_elem = driver.find_element(By.XPATH, "//div[@data-name = 'phone']")
-    fio_input = fio_elem.find_element(By.TAG_NAME, "input")
-    phone_input = phone_elem.find_element(By.TAG_NAME, "input")
-    time.sleep(3)
-    assert fio_input.get_attribute("value") != previous_name and \
-           phone_input.get_attribute("value") != previous_phone
+    fio_elem = driver.find_element(*basic_locators.FIO_ELEM)
+    phone_elem = driver.find_element(*basic_locators.PHONE_ELEM)
+    fio_input = fio_elem.find_element(*basic_locators.INPUT_WINDOW)
+    phone_input = phone_elem.find_element(*basic_locators.INPUT_WINDOW)
+    assert fio_input.get_attribute("value") != previous_name
+    assert phone_input.get_attribute("value") != previous_phone
 
 
 @pytest.mark.parametrize('locator, check_locator', [
-        ((By.XPATH, "//a[@href='/segments']"),
-         (By.XPATH, "//a[@href='/segments/segments_list']")),
-        ((By.XPATH, "//a[@href='/statistics']"),
-         (By.XPATH, "//a[@href='/statistics/summary']")),
+        (basic_locators.SEGMENT_BUTTON,
+         basic_locators.SEGMENTS_LIST),
+        (basic_locators.STATISTICS_BUTTON,
+         basic_locators.STATISTICS_SUMMARY),
     ])
 def test_page_navigation(driver, locator, check_locator):
     button = driver.find_element(*locator)
