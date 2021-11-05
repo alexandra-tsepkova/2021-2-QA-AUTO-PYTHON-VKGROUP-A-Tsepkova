@@ -1,9 +1,8 @@
 import pytest
 from .locators import basic_locators
 
-from selenium.common.exceptions import NoSuchElementException
 from .conftest import (create_new_name, create_new_phone, wait_for_load,
-                       wait_to_be_clickable)
+                       wait_to_be_clickable, check_elem_not_found)
 
 
 def test_login(driver):
@@ -18,8 +17,7 @@ def test_logout(driver):
     wait_to_be_clickable(driver, logout_button)
     logout_button.click()
     wait_for_load(driver)
-    with pytest.raises(NoSuchElementException):
-        driver.find_element(*basic_locators.USERNAME_MENU)
+    check_elem_not_found(driver, basic_locators.USERNAME_MENU)
 
 
 def test_edit_contact_information(driver):
@@ -34,8 +32,8 @@ def test_edit_contact_information(driver):
     previous_name = fio_input.get_attribute("value")
     previous_phone = phone_input.get_attribute("value")
     fio_input.clear()
-    phone_input.clear()
     fio_input.send_keys(new_name)
+    phone_input.clear()
     phone_input.send_keys(new_phone)
     save_button = driver.find_element(*basic_locators.SAVE_BUTTON)
     save_button.click()

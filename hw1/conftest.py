@@ -5,6 +5,7 @@ from .locators import basic_locators
 import pytest
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
@@ -72,3 +73,8 @@ def create_new_name():
 def create_new_phone():
     output_string = ''.join(random.SystemRandom().choice(string.digits) for _ in range(10))
     return output_string
+
+
+def check_elem_not_found(driver, locator):
+    with pytest.raises(NoSuchElementException):
+        driver.find_element(*locator)
