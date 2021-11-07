@@ -1,9 +1,9 @@
-from client import APIClient
 import pytest
+
+from client import APIClient
 
 
 class TestCampaignAPI(APIClient):
-
     @pytest.mark.API
     def test_create_campaign(self):
         created_campaign = self.create_campaign()
@@ -27,7 +27,9 @@ class TestCampaignAPI(APIClient):
     def test_delete_segment(self):
         segment_to_delete = self.create_segment()
         url = "https://target.my.com/api/v1/remarketing/mass_action/delete.json"
-        resp = self.session.post(url, headers=self.headers, json=segment_to_delete.data_to_delete)
-        successes = resp.json()['successes'][0]
-        deleted_id = successes['source_id']
+        resp = self.session.post(
+            url, headers=self.headers, json=segment_to_delete.data_to_delete
+        )
+        successes = resp.json()["successes"][0]
+        deleted_id = successes["source_id"]
         assert deleted_id == segment_to_delete.segment_id

@@ -1,4 +1,5 @@
 import faker
+
 fake = faker.Faker()
 
 
@@ -11,19 +12,12 @@ class Segment:
             "relations": [
                 {
                     "object_type": "remarketing_player",
-                    "params": {
-                        "type": "positive",
-                        "left": 365,
-                        "right": 0
-                    }
+                    "params": {"type": "positive", "left": 365, "right": 0},
                 }
             ],
-            "logicType": "or"
+            "logicType": "or",
         }
-        self.data_to_delete = [
-                {"source_id": None,
-                 "source_type": "segment"}
-        ]
+        self.data_to_delete = [{"source_id": None, "source_type": "segment"}]
 
     @property
     def id(self):
