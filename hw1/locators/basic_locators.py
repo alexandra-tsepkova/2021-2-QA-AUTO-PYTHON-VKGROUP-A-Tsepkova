@@ -1,0 +1,17 @@
+from selenium.webdriver.common.by import By
+
+SPINNER = (By.CLASS_NAME, "spinner")
+LOG_BUTTON = (By.XPATH, "//div[starts-with(@class,'responseHead-module-button')]")
+EMAIL_INPUT = (By.NAME, "email")
+PASSWORD_INPUT = (By.NAME, "password")
+AUTHFORM_BUTTON = (By.XPATH, "//div[starts-with(@class,'authForm-module-button')]")
+USERNAME_MENU = (By.XPATH, "//div[starts-with(@class,'right-module-userNameWrap')]")
+LOGOUT_BUTTON = (By.XPATH, "//a[@href = '/logout']")
+FIO_ELEM = (By.XPATH, "//div[@data-name = 'fio']")
+PHONE_ELEM = (By.XPATH, "//div[@data-name = 'phone']")
+INPUT_WINDOW = (By.TAG_NAME, "input")
+SAVE_BUTTON = (By.CLASS_NAME, "button_submit")
+SEGMENT_BUTTON = (By.XPATH, "//a[@href='/segments']")
+SEGMENTS_LIST = (By.XPATH, "//a[@href='/segments/segments_list']")
+STATISTICS_BUTTON = (By.XPATH, "//a[@href='/statistics']")
+STATISTICS_SUMMARY = (By.XPATH, "//a[@href='/statistics/summary']")
