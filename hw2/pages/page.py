@@ -1,8 +1,6 @@
-from selenium.common.exceptions import (
-    NoSuchElementException,
-    StaleElementReferenceException,
-    TimeoutException,
-)
+from selenium.common.exceptions import (NoSuchElementException,
+                                        StaleElementReferenceException,
+                                        TimeoutException)
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -67,9 +65,28 @@ class Page:
     def login(self, wrong_psw=False, invalid_log=False):
         login_string = invalid_login if invalid_log else login
         password_string = wrong_passw if wrong_psw else passw
+
         self.click(page_locators.LOG_BUTTON)
+
         email_window = self.find(page_locators.LOGIN_EMAIL)
         password_window = self.find(page_locators.LOGIN_PASSWORD)
         email_window.send_keys(login_string)
         password_window.send_keys(password_string)
+
         self.click(page_locators.AUTHFORM_BUTTON)
+
+    def find_complex_elem(self, class_locator, elem_locator, is_input=False):
+        elem_class = self.find(class_locator)
+        elem = elem_class.find_element(*elem_locator)
+        if is_input:
+            elem.clear()
+        return elem
+
+    def scroll_right(self, scroll_handler_locator):
+        try:
+            scroll_handler = self.find(scroll_handler_locator)
+            self.action_chains.click_and_hold(scroll_handler).move_by_offset(
+                100, 0
+            ).release().perform()
+        except NoSuchElementException:
+            pass
