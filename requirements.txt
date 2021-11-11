@@ -4,12 +4,17 @@
 #
 #    pip-compile --output-file=requirements.txt requirements.in
 #
+allure-pytest==2.9.45
+    # via -r requirements.in
+allure-python-commons==2.9.45
+    # via allure-pytest
 async-generator==1.10
     # via
     #   trio
     #   trio-websocket
 attrs==21.2.0
     # via
+    #   allure-python-commons
     #   outcome
     #   pytest
     #   trio
@@ -21,6 +26,8 @@ cryptography==35.0.0
     # via
     #   pyopenssl
     #   urllib3
+execnet==1.9.0
+    # via pytest-xdist
 h11==0.12.0
     # via wsproto
 idna==3.3
@@ -34,9 +41,13 @@ outcome==1.1.0
 packaging==21.2
     # via pytest
 pluggy==1.0.0
-    # via pytest
+    # via
+    #   allure-python-commons
+    #   pytest
 py==1.10.0
-    # via pytest
+    # via
+    #   pytest
+    #   pytest-forked
 pycparser==2.20
     # via cffi
 pyopenssl==21.0.0
@@ -44,11 +55,22 @@ pyopenssl==21.0.0
 pyparsing==2.4.7
     # via packaging
 pytest==6.2.5
+    # via
+    #   -r requirements.in
+    #   allure-pytest
+    #   pytest-forked
+    #   pytest-xdist
+pytest-forked==1.3.0
+    # via pytest-xdist
+pytest-xdist==2.4.0
     # via -r requirements.in
 selenium==4.0.0
     # via -r requirements.in
 six==1.16.0
-    # via pyopenssl
+    # via
+    #   allure-pytest
+    #   allure-python-commons
+    #   pyopenssl
 sniffio==1.2.0
     # via trio
 sortedcontainers==2.4.0
