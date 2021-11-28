@@ -1,0 +1,16 @@
+from selenium.webdriver.common.by import By
+
+CAMPAIGN_BUTTON = (By.XPATH, "//a[href='/dashboard']")
+USERNAME_MENU = (By.XPATH, "//div[starts-with(@class,'right-module-userNameWrap')]")
+LOGOUT_BUTTON = (By.XPATH, "//a[@href = '/logout']")
+CREATE_NEW_CAMPAIGN = (By.XPATH, "//div[contains(@class, 'button-module-textWrapper')]")
+CAMPAIGN_AIM = (By.CLASS_NAME, "_reengagement")
+INPUT_URL = (By.TAG_NAME, "input")
+CAMPAIGN_NAME = (By.CLASS_NAME, "campaign-name")
+INPUT_CAMPAIGN_NAME = (By.TAG_NAME, "input")
+CLOSE_POPUP = (By.CSS_SELECTOR, "span.bubble-ts__x")
+INPUT_NAME_WINDOW_CLEAR = (By.CLASS_NAME, "input__clear")
+LOAD_PIC_FIELD = (By.XPATH, "//input[@type='file']")
+SUBMIT_BANNER_BUTTON = (By.XPATH, "//div[@data-test='submit_banner_button']")
+SAVE_CAMPAIGN = (By.XPATH, "//button[@data-service-readonly='true']")
+ICON_SUCCESS = (By.CLASS_NAME, "icon-success")
