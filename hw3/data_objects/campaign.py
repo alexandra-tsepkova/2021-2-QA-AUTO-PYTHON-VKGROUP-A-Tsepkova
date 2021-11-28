@@ -6,7 +6,7 @@ fake = faker.Faker()
 class Campaign:
     def __init__(self, url_id, id_photo, id_photo_small):
         self.campaign_id = None
-        self.data_to_delete = [{"id": None, "status": "deleted"}]
+        self.data_to_delete = {"status": "deleted"}
         self.data_json = {
             "name": fake.lexify(text="???? ??? ?????????"),
             "read_only": False,
@@ -73,4 +73,3 @@ class Campaign:
     @id.setter
     def id(self, campaign_id):
         self.campaign_id = campaign_id
-        self.data_to_delete[0]["id"] = campaign_id

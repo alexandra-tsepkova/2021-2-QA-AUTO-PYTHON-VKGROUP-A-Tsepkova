@@ -17,7 +17,6 @@ class Segment:
             ],
             "logicType": "or",
         }
-        self.data_to_delete = [{"source_id": None, "source_type": "segment"}]
 
     @property
     def id(self):
@@ -26,4 +25,3 @@ class Segment:
     @id.setter
     def id(self, segment_id):
         self.segment_id = segment_id
-        self.data_to_delete[0]["source_id"] = segment_id

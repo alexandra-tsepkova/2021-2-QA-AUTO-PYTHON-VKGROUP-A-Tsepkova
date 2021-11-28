@@ -1,11 +1,13 @@
+import os
 from urllib import parse
 
 import pytest
 import requests
 
+from data_objects.base import BaseData
 from data_objects.campaign import Campaign
 from data_objects.segment import Segment
-from settings import app_url, login_string, password_string
+from settings import app_url
 
 
 class APIClient:
@@ -24,25 +26,18 @@ class APIClient:
 
     @pytest.fixture(autouse=True)
     def api_client(self):
-        self.username = login_string
-        self.password = password_string
         self.session = requests.Session()
-        url_to_request = "https://auth-ac.my.com/auth?lang=ru&nosavelogin=0"
-        headers = {
-            "Referer": "https://target.my.com/",
-            "Content-Type": "application/x-www-form-urlencoded",
-        }
-        data = {
-            "email": self.username,
-            "password": self.password,
-            "continue": "https://target.my.com/auth/mycom?state=target_login%3D1%26ignore_opener%3D1#email",
-            "failure": "https://account.my.com/login/",
-        }
-        self.session.post(url_to_request, headers=headers, data=data)
+        self.login()
         self.set_csrf_token()
         self.headers = {"X-CSRFToken": self.csrf_token}
         yield self.session
         self.session.close()
+
+    def login(self):
+        url_to_request = "https://auth-ac.my.com/auth?lang=ru&nosavelogin=0"
+        headers = BaseData.login_headers
+        data = BaseData.login_data
+        self.session.post(url_to_request, headers=headers, data=data)
 
     def load_campaign_picture(self, filename, width, height):
         file = open(filename, "rb")
@@ -65,9 +60,16 @@ class APIClient:
         ).json()["id"]
         return url_id
 
+    @staticmethod
+    def repo_root():
+        return os.path.abspath(os.path.join(__file__, os.path.pardir))
+
+    def path_to_pic(self, pic_name):
+        return os.path.join(self.repo_root(), pic_name)
+
     def create_campaign(self):
-        id_photo = self.load_campaign_picture("download.jpeg", 1080, 607)
-        id_photo_small = self.load_campaign_picture("download1.jpeg", 300, 300)
+        id_photo = self.load_campaign_picture(self.path_to_pic("download.jpeg"), 1080, 607)
+        id_photo_small = self.load_campaign_picture(self.path_to_pic("download1.jpeg"), 300, 300)
         url_id = self.load_campaign_url(app_url)
 
         create_campaign_url = "https://target.my.com/api/v2/campaigns.json"
@@ -80,6 +82,15 @@ class APIClient:
         campaign_id = resp.json()["id"]
         campaign_class.id = int(campaign_id)
         return campaign_class
+
+    def delete_campaign(self, created_campaign):
+        url = f"https://target.my.com/api/v2/campaigns/{created_campaign.campaign_id}.json"
+        deleted = self.session.post(
+            url,
+            headers=self.headers,
+            json=created_campaign.data_to_delete,
+        )
+        return deleted.status_code
 
     def latest_created_campaign(self):
         check_campaign_id_full_list = self.session.get(
@@ -97,6 +108,13 @@ class APIClient:
         segment_id = res.json()["id"]
         segment_class.id = segment_id
         return segment_class
+
+    def delete_segment(self, created_segment):
+        url = f"https://target.my.com/api/v2/remarketing/segments/{created_segment.segment_id}.json"
+        resp = self.session.delete(
+            url, headers=self.headers
+        )
+        return resp.status_code
 
     def get_list_of_latest_active_segments(self):
         url_to_check = (

@@ -9,13 +9,8 @@ class TestCampaignAPI(APIClient):
         created_campaign = self.create_campaign()
         latest_created_campaign_id = self.latest_created_campaign()
         assert created_campaign.campaign_id == latest_created_campaign_id
-
-        deleted = self.session.post(
-            "https://target.my.com/api/v2/campaigns/mass_action.json",
-            headers=self.headers,
-            json=created_campaign.data_to_delete,
-        )
-        assert deleted.status_code == 204
+        status_code_after_delete = self.delete_campaign(created_campaign)
+        assert status_code_after_delete == 204
 
     @pytest.mark.API
     def test_create_segment(self):
@@ -26,10 +21,5 @@ class TestCampaignAPI(APIClient):
     @pytest.mark.API
     def test_delete_segment(self):
         segment_to_delete = self.create_segment()
-        url = "https://target.my.com/api/v1/remarketing/mass_action/delete.json"
-        resp = self.session.post(
-            url, headers=self.headers, json=segment_to_delete.data_to_delete
-        )
-        successes = resp.json()["successes"][0]
-        deleted_id = successes["source_id"]
-        assert deleted_id == segment_to_delete.segment_id
+        status_code_after_delete = self.delete_segment(segment_to_delete)
+        assert status_code_after_delete == 204
