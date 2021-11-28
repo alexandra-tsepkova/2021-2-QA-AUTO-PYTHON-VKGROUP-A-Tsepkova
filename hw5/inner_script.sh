@@ -6,11 +6,7 @@ echo ''
 
 # Total request per method
 echo "Count requests per methods"
-for method in GET HEAD POST PUT PATCH DELETE CONNECT OPTIONS TRACE
-do
-  echo -n "${method} - "
-  cat access.log | grep -E "^.*\"${method}.*$" -c
-done
+cat access.log | awk '{sub(/^\"/, "", $6); print $6}' | sort | uniq -c | awk 'length ($2) < 30'
 
 echo ''
 

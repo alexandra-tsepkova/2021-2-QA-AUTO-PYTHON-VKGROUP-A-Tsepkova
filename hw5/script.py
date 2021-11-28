@@ -3,15 +3,19 @@ lines = f.readlines()
 res = open("result_py.txt", "w")
 
 
-res.write(" ".join(("Amount of queries:", str(len(lines)))) + "\n")
-methods = {'GET': 0, 'HEAD': 0, 'POST': 0, 'PUT': 0, 'PATCH': 0,
-           'DELETE': 0, 'CONNECT': 0, 'OPTIONS': 0, 'TRACE': 0}
+res.write(" ".join(("Amount of queries:\n", str(len(lines)))) + "\n\n")
+
+methods = {}
+for line in lines:
+    method = line.split()[5].lstrip('"')
+    if method in methods.keys():
+        methods[method] += 1
+    elif len(method) < 100:
+        methods[method] = 1
+res.write("Count requests per methods:\n")
 for m, v in methods.items():
-    for string in lines:
-        if '"' + m in string:
-            methods[m] += 1
-for m, v in methods.items():
-    res.write(f"{m} - {v}\n")
+    res.write("{: >6}  {}\n".format(v, m))
+res.write("\n")
 
 times_visited_urls = {}
 for line in lines:
@@ -21,7 +25,7 @@ for line in lines:
     else:
         times_visited_urls[url] = 1
 res.write("Most visited urls:" + "\n" + "url       times\n")
-res.write("\n".join(map(str, sorted(times_visited_urls.items(), key=lambda x: x[1], reverse=True)[:10])) + "\n")
+res.write("\n".join(map(str, sorted(times_visited_urls.items(), key=lambda x: x[1], reverse=True)[:10])) + "\n\n")
 
 
 queries = []
@@ -41,6 +45,6 @@ for line in lines:
 
 res.write("Biggest queries with status code 4xx" + "\n" +
           "ip        url         status code        size\n")
-res.write("\n".join(map(str, sorted(queries, key=lambda x: int(x.split()[-1]), reverse=True)[:5])) + "\n")
+res.write("\n".join(map(str, sorted(queries, key=lambda x: int(x.split()[-1]), reverse=True)[:5])) + "\n\n")
 res.write("Top queries with status code 5xx by users" + "\n" + "ip         times\n")
 res.write("\n".join(map(str, sorted(queries_5xx.items(), key=lambda x: x[1], reverse=True)[:5])) + "\n")
