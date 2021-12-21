@@ -1,3 +1,4 @@
+import allure
 import pymysql
 import pytest
 import settings
@@ -54,17 +55,22 @@ class MysqlClient:
 
     def check_database(self, name, parameter, expected_cond):
         cursor = self.connection.cursor()
-        cursor.execute(f"select {parameter} from `{settings.db_table}` where username='{name}' ;")
+        cursor.execute(
+            f"select {parameter} from `{settings.db_table}` where username='{name}' ;"
+        )
         res = cursor.fetchall()
-        assert(len(res) == 1)
-        assert(res[0] == (expected_cond,))
+        assert len(res) == 1
+        with allure.step(
+            f"check if user named {name} has {parameter} set to {expected_cond}"
+        ):
+            assert res[0] == (expected_cond,)
 
     def check_if_in_database(self, name):
         cursor = self.connection.cursor()
         cursor.execute(f"select * from `{settings.db_table}` where username='{name}' ;")
         res = cursor.fetchall()
-        if len(res) == 0:
-            return False
-        else:
-            return True
-
+        with allure.step(f"check if user named {name} is in database"):
+            if len(res) == 0:
+                return False
+            else:
+                return True

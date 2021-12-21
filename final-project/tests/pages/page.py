@@ -1,6 +1,8 @@
-from selenium.common.exceptions import (NoSuchElementException,
-                                        StaleElementReferenceException,
-                                        TimeoutException)
+from selenium.common.exceptions import (
+    NoSuchElementException,
+    StaleElementReferenceException,
+    TimeoutException,
+)
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from locators import basic_locators
@@ -17,8 +19,15 @@ class Page:
     def setup(self):
         pass
 
-    def find(self, locator, visible=True, multiple=False, complex_elem=False,
-             elem_to_search_in=None, timeout=TIMEOUT):
+    def find(
+        self,
+        locator,
+        visible=True,
+        multiple=False,
+        complex_elem=False,
+        elem_to_search_in=None,
+        timeout=TIMEOUT,
+    ):
         element = None
         try:
             WebDriverWait(self.driver, timeout).until(
@@ -61,7 +70,10 @@ class Page:
 
     def find_upper_menu(self):
         login_name_menu = self.find(basic_locators.LOGIN_NAME_MENU)
-        vk_id = self.find(basic_locators.VK_ID_MENU,
-                          complex_elem=True, multiple=True,
-                          elem_to_search_in=login_name_menu)
+        vk_id = self.find(
+            basic_locators.VK_ID_MENU,
+            complex_elem=True,
+            multiple=True,
+            elem_to_search_in=login_name_menu,
+        )
         return vk_id

@@ -14,6 +14,8 @@ wrong_format_email = lambda: fake.lexify(text="??????")
 db_user = "test_qa"
 db_password = "qa_test"
 db_name = "myapp"
-db_host = "0.0.0.0"
+db_host = "mysql"
 db_port = 3306
 db_table = "test_users"
+
+myapp = "myapp:8080"

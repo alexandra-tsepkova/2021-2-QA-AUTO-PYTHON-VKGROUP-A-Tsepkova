@@ -1,5 +1,23 @@
 version: "3.3"
 services:
+  tests:
+    build: tests
+    volumes:
+      - /tmp:/tmp
+      - ./wait-for-it/wait-for-it.sh:/startup/wait-for-it.sh
+    depends_on:
+      - myapp
+      - mysql
+      - selenoid
+    entrypoint:
+      - /startup/wait-for-it.sh
+      - mysql:3036
+      - --
+      - pytest
+      - -s
+      - -v
+      - --alluredir=/tmp/allure
+
   myapp:
     image: myapp
     restart: always

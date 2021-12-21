@@ -18,5 +18,3 @@ class RegistrationPage(Page):
         confirm_window.send_keys(password)
         self.click(basic_locators.CHECKBOX)
         self.click(basic_locators.SUBMIT_BUTTON)
-
-
