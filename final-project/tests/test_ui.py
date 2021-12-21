@@ -1,11 +1,9 @@
 import allure
-
-from base_case_ui import BaseCase
-from sqlclient import MysqlClient
-from locators import basic_locators
-import settings
-
 import pytest
+import settings
+from base_case_ui import BaseCase
+from locators import basic_locators
+from sqlclient import MysqlClient
 
 
 @allure.feature("UI authorization tests")

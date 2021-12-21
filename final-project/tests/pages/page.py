@@ -1,3 +1,5 @@
+import allure
+from locators import basic_locators
 from selenium.common.exceptions import (
     NoSuchElementException,
     StaleElementReferenceException,
@@ -5,7 +7,6 @@ from selenium.common.exceptions import (
 )
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-from locators import basic_locators
 
 CLICK_RETRY = 3
 TIMEOUT = 5
@@ -62,6 +63,7 @@ class Page:
                     raise
 
     def login(self, login, password):
+        allure.step(f"log in user {login} with password {password}")
         username_window = self.find(basic_locators.USERNAME)
         password_window = self.find(basic_locators.PASSWORD)
         username_window.send_keys(login)

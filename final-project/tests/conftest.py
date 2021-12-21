@@ -3,10 +3,10 @@ import shutil
 import sys
 
 import pytest
-from selenium import webdriver
-from pages.welcome_page import WelcomePage
 from pages.page import Page
 from pages.registration_page import RegistrationPage
+from pages.welcome_page import WelcomePage
+from selenium import webdriver
 
 
 @pytest.fixture

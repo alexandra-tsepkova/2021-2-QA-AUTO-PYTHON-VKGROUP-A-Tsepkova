@@ -1,8 +1,8 @@
 import time
 
-from pages.page import Page
 import settings
 from locators import basic_locators
+from pages.page import Page
 from selenium.webdriver import ActionChains
 
 

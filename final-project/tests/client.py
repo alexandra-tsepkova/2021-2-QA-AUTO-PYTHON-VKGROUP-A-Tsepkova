@@ -27,7 +27,9 @@ class ApiClient:
         url_to_request = f"http://{settings.myapp}/login"
         headers = {"Content-Type": "application/x-www-form-urlencoded"}
         data = {"username": f"{login}", "password": f"{password}", "submit": "Login"}
-        with allure.step(f"sending POST request to log in user {login} with password {password}"):
+        with allure.step(
+            f"sending POST request to log in user {login} with password {password}"
+        ):
             res = session.post(url_to_request, headers=headers, data=data)
         with allure.step(f"request status code {res.status_code}"):
             pass
@@ -38,7 +40,9 @@ class ApiClient:
         url_to_request = f"http://{settings.myapp}/api/add_user"
         headers = {"Content-Type": "application/json"}
         data = {"username": f"{login}", "password": f"{password}", "email": f"{email}"}
-        with allure.step(f"sending POST request to add user {login} with password {password} and email {email}"):
+        with allure.step(
+            f"sending POST request to add user {login} with password {password} and email {email}"
+        ):
             res = session.post(url_to_request, headers=headers, json=data)
         return res
 
@@ -47,7 +51,9 @@ class ApiClient:
     def go_to_main_page(session):
         url_to_request = f"http://{settings.myapp}/welcome"
         res = session.get(url_to_request)
-        allure.step(f"sending get request to go to main page; status code {res.status_code}")
+        allure.step(
+            f"sending get request to go to main page; status code {res.status_code}"
+        )
         return res
 
     @staticmethod
@@ -74,7 +80,9 @@ class ApiClient:
     def delete_user(session, username):
         url_to_request = f"http://{settings.myapp}/api/del_user/{username}"
         res = session.get(url_to_request)
-        allure.step(f"sending get request to delete user; status code {res.status_code}")
+        allure.step(
+            f"sending get request to delete user; status code {res.status_code}"
+        )
         return res
 
     @staticmethod
@@ -90,12 +98,16 @@ class ApiClient:
             "submit": "Register",
         }
         res = session.post(url_to_request, headers=headers, data=data)
-        allure.step(f"sending post request to registrate user {login} with password {password} and email {email}, status code {res.status_code}")
+        allure.step(
+            f"sending post request to registrate user {login} with password {password} and email {email}, status code {res.status_code}"
+        )
         return res
 
     @staticmethod
     def check_status(session):
         url_to_request = f"http://{settings.myapp}/status"
         res = session.get(url_to_request)
-        allure.step(f"sending get request to check status; status code {res.status_code}")
+        allure.step(
+            f"sending get request to check status; status code {res.status_code}"
+        )
         return res

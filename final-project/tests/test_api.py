@@ -1,8 +1,8 @@
 import allure
 import pytest
+import settings
 from client import ApiClient
 from sqlclient import MysqlClient
-import settings
 
 
 @allure.feature("API authorization tests")
