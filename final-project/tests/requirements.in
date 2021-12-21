@@ -1,0 +1,6 @@
+allure-pytest==2.9.45
+Faker==9.8.0
+PyMySQL==1.0.2
+pytest==6.2.5
+requests==2.26.0
+selenium==4.0.0
