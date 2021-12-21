@@ -219,6 +219,32 @@ class TestApiRequests(ApiClient, MysqlClient):
         self.check_database(login, "access", 1)
 
     @allure.description(
+        """Check that non-existing user can not be accepted
+                                """
+    )
+    def test_accept_non_existing_user(self, authorized_client):
+        login = settings.normal_login()
+        response = self.accept_user(authorized_client, login)
+        assert response.status_code == 404
+        assert not self.check_if_in_database(login)
+
+    @allure.description(
+        """Check that non-blocked user can not be accepted
+                                """
+    )
+    def test_accept_non_blocked_user(self, authorized_client):
+        login, password, email = (
+            settings.normal_login(),
+            settings.normal_password(),
+            settings.normal_email(),
+        )
+        self.add_user(authorized_client, login, password, email)
+        self.check_database(login, "access", 1)
+        response = self.accept_user(authorized_client, login)
+        assert response.status_code == 304
+        self.check_database(login, "access", 1)
+
+    @allure.description(
         """Check that existing user can be deleted
                                 """
     )
