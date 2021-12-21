@@ -1,0 +1,4 @@
+MYSQL_HOST = mysql
+MYSQL_PORT = 3306
+MYSQL_DB = myapp
+VK_URL = vkmock:5000
